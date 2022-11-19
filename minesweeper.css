@@ -1,0 +1,71 @@
+html {
+  height: 100%;
+}
+
+body {
+  background-color: rgb(121, 120, 120);
+  min-height: 100%;
+}
+
+#resetGameIcon {
+  background-image: url("smiley.png");
+  background-color: #d9d9d9;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  width: 75px;
+  height: 75px;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+  justify-content: center;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -0);
+  box-shadow: 0 0 6px 3px rgb(8, 8, 8);
+}
+  
+.game-board div {
+  background-color: #d9d9d9;
+  border-style: outset;
+  border-width: 5px;
+}
+
+#mines {
+  font-family: monospace;
+  font-size: 60px;
+  color: red;
+  width: 90px;
+  height: auto;
+  text-align: center;
+  text-shadow: 2px 2px 5px black, 2px 2px 5px red;
+}
+
+#time {
+  font-family: monospace;
+  font-size: 60px;
+  color: red;
+  text-shadow: 2px 2px 5px black, 2px 2px 5px red;
+  width: 120px;
+  height: 80px;
+  text-align: center;
+}
+
+.functions-panel {
+  display: flex;
+  background-color: #d9d9d9;
+  border-style: inset;
+  border-width: 5px;
+  width: 442px;
+  height: 80px;
+  position: absolute;
+  top: 21.5%;
+  left:40.5%;
+  box-shadow: 0 0 6px 3px rgb(8, 8, 8);
+  justify-content: space-between;
+}
