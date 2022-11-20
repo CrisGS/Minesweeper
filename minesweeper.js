@@ -23,9 +23,9 @@ function generateBoardGame() {
     return 0;
   });
 
-	for (let i = 0; i < boardCellsNumber; ++i) {
-		const divsElement = document.createElement("div");
-		divsElement.setAttribute('id', i);
+  for (let i = 0; i < boardCellsNumber; ++i) {
+    const divsElement = document.createElement("div");
+    divsElement.setAttribute('id', i);
     divsElement.setAttribute('class', 'safe');
     divsElement.style.backgroundColor = 'yellow';
     for (let j = 0; j < 20; ++j) {
@@ -35,9 +35,9 @@ function generateBoardGame() {
         divsElement.style.backgroundColor = 'red';
       }
     }
-		divsElement.setAttribute('onclick', 'setBorder(this.id)');
-		boardGame.appendChild(divsElement);
-	}
+    divsElement.setAttribute('onclick', 'setBorder(this.id)');
+    boardGame.appendChild(divsElement);
+  }
 
   elapsedTime();
 }
@@ -53,11 +53,13 @@ function setBorder(clickedCellId) {
 function elapsedTime() {
   setInterval(() => {
     ++seconds;
+
     if (seconds < 10) {
       seconds = '00' + seconds;
     } else if (seconds < 100) {
       seconds = '0' + seconds;
     }
+
     document.getElementById('time').innerText = seconds;
   }, 1000);
 }
