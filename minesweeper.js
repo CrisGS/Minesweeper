@@ -2,12 +2,14 @@ let minesNumber = 20;
 const boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
 const remainsMinesNumber = document.getElementById("mines").innerHTML = minesNumber;
-let gameOver = false;
+let gameOver = true;
+let seconds = 0;
 
 function generateBoardGame() {
   let uniqueValues = new Set();
   let bombs = [];
   let min = 1, max = boardCellsNumber;
+  document.getElementById('time').innerText = '0' + '0' + seconds;
 
   while(uniqueValues.size < minesNumber) {
     uniqueValues.add(Math.floor(Math.random() * (max - min + min) + min));
@@ -36,6 +38,8 @@ function generateBoardGame() {
 		divsElement.setAttribute('onclick', 'setBorder(this.id)');
 		boardGame.appendChild(divsElement);
 	}
+
+  elapsedTime();
 }
 
 function setBorder(clickedCellId) {
@@ -47,12 +51,18 @@ function setBorder(clickedCellId) {
 }
 
 function elapsedTime() {
-  let firstDigit = 0, secondDigit = 0, lastDigit = 0;
-  ++lastDigit;
-  let time = firstDigit + '' + secondDigit + '' + lastDigit;
-  document.getElementById('time').innerText = time;
+  setInterval(() => {
+    ++seconds;
+
+    if (seconds < 10) {
+      seconds = '00' + seconds;
+    } else if (seconds < 100) {
+      seconds = '0' + seconds;
+    }
+
+    document.getElementById('time').innerText = seconds;
+  }, 1000);
 }
-setInterval(elapsedTime(), 1000);
 
 function resetGame() {
   location.reload();
