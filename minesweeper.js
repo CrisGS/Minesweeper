@@ -53,13 +53,11 @@ function setBorder(clickedCellId) {
 function elapsedTime() {
   setInterval(() => {
     ++seconds;
-
     if (seconds < 10) {
       seconds = '00' + seconds;
     } else if (seconds < 100) {
       seconds = '0' + seconds;
     }
-
     document.getElementById('time').innerText = seconds;
   }, 1000);
 }
