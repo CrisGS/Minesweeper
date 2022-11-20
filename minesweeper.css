@@ -1,10 +1,5 @@
-html {
-  height: 100%;
-}
-
 body {
-  background-color: rgb(121, 120, 120);
-  min-height: 100%;
+  background-color: rgb(84, 81, 81);
 }
 
 #resetGameIcon {
@@ -64,8 +59,9 @@ body {
   width: 442px;
   height: 80px;
   position: absolute;
-  top: 21.5%;
-  left:40.5%;
+  top: 16.5%;
+  left: 50%;
+  transform: translate(-50%, -0);
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
   justify-content: space-between;
 }
