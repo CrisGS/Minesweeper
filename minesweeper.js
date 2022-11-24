@@ -2,12 +2,12 @@ let minesNumber = 20;
 const boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
 const remainsMinesNumber = document.getElementById("mines").innerHTML = minesNumber;
-let gameOver = true;
+let pressedCells = 0;
 let seconds = 0;
+let bombs = [];
 
 function generateBoardGame() {
   let uniqueValues = new Set();
-  let bombs = [];
   let min = 1, max = boardCellsNumber;
   document.getElementById('time').innerText = '0' + '0' + seconds;
 
@@ -30,7 +30,6 @@ function generateBoardGame() {
     divsElement.style.backgroundColor = 'yellow';
     for (let j = 0; j < 20; ++j) {
       if (i === bombs[j]) {
-        console.log(i + ' ' + bombs[j]);
         divsElement.setAttribute('class', 'bomb');
         divsElement.style.backgroundColor = 'red';
       }
@@ -38,15 +37,36 @@ function generateBoardGame() {
     divsElement.setAttribute('onclick', 'setBorder(this.id)');
     boardGame.appendChild(divsElement);
   }
-
-  elapsedTime();
 }
 
 function setBorder(clickedCellId) {
+  let clickedCell = document.getElementById(clickedCellId);
+  let clickedCellType = clickedCell.getAttribute('class');
+  console.log(clickedCellType);
   for (let i = 0; i < boardCellsNumber; ++i) {
     if (i == clickedCellId) {
+      ++pressedCells;
       document.getElementById(clickedCellId).style.border = "2px inset #d9d9d9";
     }
+  }
+  if (pressedCells === 1) {
+    elapsedTime();
+  }
+
+  if (clickedCellType === 'bomb') {
+    for (let j = 0; j < 20; ++j) {
+      for (let i = 0; i < boardCellsNumber; ++i) {
+        const cell = document.getElementById(i);
+        if (i === bombs[j]) {
+          cell.style.backgroundColor = 'gray';
+          cell.style.backgroundImage = "url('mine.png')";
+          cell.style.backgroundRepeat = "no-repeat";
+          cell.style.backgroundPosition = "center";
+          cell.style.border = "2px inset #d9d9d9";
+        }
+      }
+    }
+    clickedCell.style.backgroundColor = 'red';
   }
 }
 
