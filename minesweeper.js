@@ -1,10 +1,12 @@
-let minesNumber = 20;
+let minesNumber = 10, flagsNumber = 10;
 const boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
-const remainsMinesNumber = document.getElementById("mines").innerHTML = minesNumber;
+const remainsFlagsNumber = document.getElementById("mines").innerHTML = flagsNumber;
 let pressedCells = 0;
 let seconds = 0;
 let bombs = [];
+let cellsIdWithFlags = [];
+var myInterval;
 
 function generateBoardGame() {
   let uniqueValues = new Set();
@@ -27,7 +29,7 @@ function generateBoardGame() {
     const divsElement = document.createElement("div");
     divsElement.setAttribute('id', i);
     divsElement.setAttribute('class', 'safe');
-    divsElement.style.backgroundColor = 'yellow';
+    divsElement.setAttribute('disabled', 'false');
     for (let j = 0; j < 20; ++j) {
       if (i === bombs[j]) {
         divsElement.setAttribute('class', 'bomb');
@@ -54,6 +56,8 @@ function setBorder(clickedCellId) {
   }
 
   if (clickedCellType === 'bomb') {
+    document.getElementById('resetGameIcon').style.backgroundImage = "url('deadSmile.png')";
+    clearInterval(myInterval);
     for (let j = 0; j < 20; ++j) {
       for (let i = 0; i < boardCellsNumber; ++i) {
         const cell = document.getElementById(i);
@@ -63,6 +67,7 @@ function setBorder(clickedCellId) {
           cell.style.backgroundRepeat = "no-repeat";
           cell.style.backgroundPosition = "center";
           cell.style.border = "2px inset #d9d9d9";
+          cell.style.pointerEvents = 'none';
         }
       }
     }
@@ -70,8 +75,28 @@ function setBorder(clickedCellId) {
   }
 }
 
+boardGame.addEventListener('contextmenu', (ev) => {
+  ev.preventDefault();
+  console.log(cellsIdWithFlags);
+  let alreadyMarked = false;
+  for (let i = 0; i < cellsIdWithFlags.length; ++i) {
+    if (cellsIdWithFlags[i] == ev.target.id) {
+      alreadyMarked = true;
+    }
+  }
+  if (alreadyMarked == false) {
+    cellsIdWithFlags.push(ev.target.id);
+    rightClickedCell = document.getElementById(ev.target.id);
+    rightClickedCell.style.backgroundImage ='url(flag.png)';
+    rightClickedCell.style.backgroundRepeat = "no-repeat";
+    rightClickedCell.style.backgroundPosition = "center";
+    --flagsNumber;
+  }
+  document.getElementById("mines").innerHTML = flagsNumber;
+}, false);
+
 function elapsedTime() {
-  setInterval(() => {
+  myInterval = setInterval(() => {
     ++seconds;
 
     if (seconds < 10) {
