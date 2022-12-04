@@ -1,3 +1,11 @@
+@viewport {
+  width: device-width;
+  zoom: 1.1;
+  min-zoom: 0.4;
+  max-zoom: 2;
+  user-zoom: fixed;
+  }
+
 body {
   background-color: rgb(84, 81, 81);
 }
@@ -39,6 +47,7 @@ body {
   height: auto;
   text-align: center;
   text-shadow: 2px 2px 5px black, 2px 2px 5px red;
+  background-color: black;
 }
 
 #time {
@@ -49,6 +58,7 @@ body {
   width: 120px;
   height: 80px;
   text-align: center;
+  background-color: black;
 }
 
 .functions-panel {
@@ -64,4 +74,14 @@ body {
   transform: translate(-50%, -0);
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
   justify-content: space-between;
+}
+
+h1 {
+  font-family: monospace;
+  font-size: 50px;
+  text-align: center;
+  -webkit-text-fill-color: #d9d9d9;
+  text-shadow: 3px 3px 7px black;
+  font-weight: 700;
+  text-decoration: underline;
 }
