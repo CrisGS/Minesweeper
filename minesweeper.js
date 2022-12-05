@@ -9,10 +9,11 @@ let cellsIdWithFlags = [];
 var myInterval;
 
 function generateBoardGame() {
+  // generate randomly the bombs on the board
   let uniqueValues = new Set();
   let min = 1, max = boardCellsNumber;
   document.getElementById('time').innerText = '0' + '0' + seconds;
-
+  // store the id cells which will be set as a bomb into an array which is ascending sorted for a easier iteration through the iteration of the board game 
   while(uniqueValues.size < minesNumber) {
     uniqueValues.add(Math.floor(Math.random() * (max - min + min) + min));
   }
@@ -24,7 +25,7 @@ function generateBoardGame() {
     }
     return 0;
   });
-
+  // generate the board game and set the state of cells (safe cell or bomb cell)
   for (let i = 0; i < boardCellsNumber; ++i) {
     const divsElement = document.createElement("div");
     divsElement.setAttribute('id', i);
@@ -40,7 +41,7 @@ function generateBoardGame() {
     boardGame.appendChild(divsElement);
   }
 }
-
+// handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
 function setBorder(clickedCellId) {
   let clickedCell = document.getElementById(clickedCellId);
   let clickedCellType = clickedCell.getAttribute('class');
@@ -54,7 +55,7 @@ function setBorder(clickedCellId) {
   if (pressedCells === 1) {
     elapsedTime();
   }
-
+  // check if the selected cell contain a bomb
   if (clickedCellType === 'bomb') {
     document.getElementById('resetGameIcon').style.backgroundImage = "url('deadSmile.png')";
     clearInterval(myInterval);
@@ -75,6 +76,7 @@ function setBorder(clickedCellId) {
   }
 }
 
+// handle right click events on cells (set flag to cell selected)
 boardGame.addEventListener('contextmenu', (ev) => {
   ev.preventDefault();
   console.log(cellsIdWithFlags);
@@ -95,6 +97,7 @@ boardGame.addEventListener('contextmenu', (ev) => {
   document.getElementById("mines").innerHTML = flagsNumber;
 }, false);
 
+// handle the time functionality
 function elapsedTime() {
   myInterval = setInterval(() => {
     ++seconds;
