@@ -1,7 +1,7 @@
 let minesNumber = 10, flagsNumber = 10;
 const boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
-const remainsFlagsNumber = document.getElementById("mines").innerHTML = flagsNumber;
+document.getElementById("mines").innerHTML = minesNumber;
 let pressedCells = 0;
 let seconds = 0;
 let bombs = [];
@@ -45,7 +45,6 @@ function generateBoardGame() {
 function setBorder(clickedCellId) {
   let clickedCell = document.getElementById(clickedCellId);
   let clickedCellType = clickedCell.getAttribute('class');
-  console.log(clickedCellType);
   for (let i = 0; i < boardCellsNumber; ++i) {
     if (i == clickedCellId) {
       ++pressedCells;
@@ -73,28 +72,36 @@ function setBorder(clickedCellId) {
       }
     }
     clickedCell.style.backgroundColor = 'red';
+    for (let i = 0; i < boardCellsNumber; ++i) {
+      const everyCell = document.getElementById(i);
+      everyCell.style.pointerEvents = 'none';
+    }
   }
 }
 
-// handle right click events on cells (set flag to cell selected)
+// handle right click events on cells (set flag to the selected cell)
 boardGame.addEventListener('contextmenu', (ev) => {
   ev.preventDefault();
-  console.log(cellsIdWithFlags);
-  let alreadyMarked = false;
   for (let i = 0; i < cellsIdWithFlags.length; ++i) {
     if (cellsIdWithFlags[i] == ev.target.id) {
       alreadyMarked = true;
     }
   }
-  if (alreadyMarked == false) {
+  if (flagsNumber > 0) {
     cellsIdWithFlags.push(ev.target.id);
-    rightClickedCell = document.getElementById(ev.target.id);
+    const rightClickedCell = document.getElementById(ev.target.id);
+    let rightClickedCellType = rightClickedCell.getAttribute('class');
     rightClickedCell.style.backgroundImage ='url(flag.png)';
     rightClickedCell.style.backgroundRepeat = "no-repeat";
     rightClickedCell.style.backgroundPosition = "center";
+    if (rightClickedCellType === 'bomb') {
+      --minesNumber;
+      rightClickedCell.style.pointerEvents = 'none';
+    }
+    document.getElementById("mines").innerHTML = minesNumber;
     --flagsNumber;
   }
-  document.getElementById("mines").innerHTML = flagsNumber;
+  console.log(flagsNumber);
 }, false);
 
 // handle the time functionality
