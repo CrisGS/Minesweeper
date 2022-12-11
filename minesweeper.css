@@ -1,10 +1,10 @@
 @viewport {
   width: device-width;
-  zoom: 1.1;
-  min-zoom: 0.4;
-  max-zoom: 2;
-  user-zoom: fixed;
-  }
+  zoom: auto;
+  min-zoom: 0.1;
+  max-zoom: 100%;
+  user-zoom: auto;
+}
 
 body {
   background-color: rgb(84, 81, 81);
