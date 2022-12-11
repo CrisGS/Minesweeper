@@ -1,11 +1,11 @@
-let minesNumber = 10, flagsNumber = 10;
+let minesNumber = 20, flagsNumber = 20;
 const boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
 document.getElementById("mines").innerHTML = minesNumber;
 let pressedCells = 0;
 let seconds = 0;
 let bombs = [];
-let cellsIdWithFlags = [];
+let cellsIdWithFlags = new Set();
 var myInterval;
 
 function generateBoardGame() {
@@ -68,6 +68,7 @@ function setBorder(clickedCellId) {
           cell.style.backgroundPosition = "center";
           cell.style.border = "2px inset #d9d9d9";
           cell.style.pointerEvents = 'none';
+          document.getElementById('header').innerText = 'GAME OVER!';
         }
       }
     }
@@ -76,32 +77,42 @@ function setBorder(clickedCellId) {
       const everyCell = document.getElementById(i);
       everyCell.style.pointerEvents = 'none';
     }
+  } else {
+    for (let i = 0; i < boardCellsNumber; ++i) {
+      let cellsForDiscover = document.getElementById(i);
+      let cellsForDiscoverType = cellsForDiscover.getAttribute('class');
+      if (cellsForDiscoverType === 'safe') {
+        document.getElementById(i).style.border = "2px inset #d9d9d9";
+      }
+    }
   }
 }
 
 // handle right click events on cells (set flag to the selected cell)
 boardGame.addEventListener('contextmenu', (ev) => {
   ev.preventDefault();
-  for (let i = 0; i < cellsIdWithFlags.length; ++i) {
-    if (cellsIdWithFlags[i] == ev.target.id) {
-      alreadyMarked = true;
-    }
-  }
-  if (flagsNumber > 0) {
-    cellsIdWithFlags.push(ev.target.id);
-    const rightClickedCell = document.getElementById(ev.target.id);
-    let rightClickedCellType = rightClickedCell.getAttribute('class');
-    rightClickedCell.style.backgroundImage ='url(flag.png)';
-    rightClickedCell.style.backgroundRepeat = "no-repeat";
-    rightClickedCell.style.backgroundPosition = "center";
-    if (rightClickedCellType === 'bomb') {
-      --minesNumber;
-      rightClickedCell.style.pointerEvents = 'none';
+  const rightClickedCell = document.getElementById(ev.target.id);
+  let rightClickedCellType = rightClickedCell.getAttribute('class');
+  if (flagsNumber >= 0) {
+    if (cellsIdWithFlags.has(ev.target.id) === false && ev.target.id !== 'boardGameCells') {
+      cellsIdWithFlags.add(ev.target.id);
+      rightClickedCell.style.backgroundImage ='url(flag.png)';
+      rightClickedCell.style.backgroundRepeat = "no-repeat";
+      rightClickedCell.style.backgroundPosition = "center";
+      if (rightClickedCellType === 'bomb') {
+        --minesNumber;
+        --flagsNumber;
+      }
+    } else {
+      cellsIdWithFlags.delete(ev.target.id);
+      rightClickedCell.style.backgroundImage = 'none';
+      if (rightClickedCellType === 'bomb') {
+        ++minesNumber;
+        ++flagsNumber;
+      }
     }
     document.getElementById("mines").innerHTML = minesNumber;
-    --flagsNumber;
   }
-  console.log(flagsNumber);
 }, false);
 
 // handle the time functionality
