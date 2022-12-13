@@ -77,14 +77,6 @@ function setBorder(clickedCellId) {
       const everyCell = document.getElementById(i);
       everyCell.style.pointerEvents = 'none';
     }
-  } else {
-    for (let i = 0; i < boardCellsNumber; ++i) {
-      let cellsForDiscover = document.getElementById(i);
-      let cellsForDiscoverType = cellsForDiscover.getAttribute('class');
-      if (cellsForDiscoverType === 'safe') {
-        document.getElementById(i).style.border = "2px inset #d9d9d9";
-      }
-    }
   }
 }
 
