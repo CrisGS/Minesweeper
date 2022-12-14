@@ -1,4 +1,4 @@
-let minesNumber = 20, flagsNumber = 20;
+let minesNumber = 10, flagsNumber = 10;
 const boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
 document.getElementById("mines").innerHTML = minesNumber;
