@@ -26,11 +26,12 @@ function generateBoardGame() {
     return 0;
   });
   // generate the board game and set the state of cells (safe cell or bomb cell)
+  let myBoard = [];
   for (let i = 0; i < boardCellsNumber; ++i) {
     const divsElement = document.createElement("div");
+    myBoard[i] = i;
     divsElement.setAttribute('id', i);
     divsElement.setAttribute('class', 'safe');
-    divsElement.setAttribute('disabled', 'false');
     for (let j = 0; j < 20; ++j) {
       if (i === bombs[j]) {
         divsElement.setAttribute('class', 'bomb');
@@ -40,7 +41,37 @@ function generateBoardGame() {
     divsElement.setAttribute('onclick', 'setBorder(this.id)');
     boardGame.appendChild(divsElement);
   }
+
+  let gameGrid = [];
+  for(let i = 0; i < myBoard.length; i += 9) {
+    gameGrid.push(myBoard.slice(i, i + 9));
+  }
+
+  let iteratedCells = 0, startLine = 3, endLine = 6, startColumn = 6, endColumn = 9;
+  while (iteratedCells < 8) {
+    for (let j = startColumn; j < endColumn; ++j) {
+      document.getElementById(gameGrid[startLine][j]).style.backgroundColor = 'blue';
+      ++iteratedCells;
+    }
+
+    for (let i = startLine + 1; i < endLine; ++i) {
+      document.getElementById(gameGrid[i][endColumn - 1]).style.backgroundColor = 'blue';
+      ++iteratedCells;
+    }
+
+    for (let k = endColumn - 2; k > startColumn - 1; --k) {
+      document.getElementById(gameGrid[endLine - 1][k]).style.backgroundColor = 'blue';
+      ++iteratedCells;
+    }
+
+    for (let l = endLine - 2; l > startLine; --l) {
+      document.getElementById(gameGrid[l][startColumn]).style.backgroundColor = 'blue';
+      ++iteratedCells;
+    }
+  }
+  return bombs;
 }
+
 // handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
 function setBorder(clickedCellId) {
   let clickedCell = document.getElementById(clickedCellId);
@@ -54,6 +85,7 @@ function setBorder(clickedCellId) {
   if (pressedCells === 1) {
     elapsedTime();
   }
+  
   // check if the selected cell contain a bomb
   if (clickedCellType === 'bomb') {
     document.getElementById('resetGameIcon').style.backgroundImage = "url('deadSmile.png')";
@@ -68,7 +100,6 @@ function setBorder(clickedCellId) {
           cell.style.backgroundPosition = "center";
           cell.style.border = "2px inset #d9d9d9";
           cell.style.pointerEvents = 'none';
-          document.getElementById('header').innerText = 'GAME OVER!';
         }
       }
     }
@@ -77,6 +108,7 @@ function setBorder(clickedCellId) {
       const everyCell = document.getElementById(i);
       everyCell.style.pointerEvents = 'none';
     }
+    document.getElementById('header').innerText = 'Game Over!';
   }
 }
 
