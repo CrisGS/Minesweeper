@@ -41,12 +41,12 @@ function generateBoardGame() {
     divsElement.setAttribute('onclick', 'setBorder(this.id)');
     boardGame.appendChild(divsElement);
   }
-
+  // convert the array where the cells id are stored to a 2d array
   let gameGrid = [];
   for(let i = 0; i < myBoard.length; i += 9) {
     gameGrid.push(myBoard.slice(i, i + 9));
   }
-
+  // test spiral iteration for cell with coordinates i = 4 and j = 6
   let iteratedCells = 0, startLine = 3, endLine = 6, startColumn = 6, endColumn = 9;
   while (iteratedCells < 8) {
     for (let j = startColumn; j < endColumn; ++j) {
