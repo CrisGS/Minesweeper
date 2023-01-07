@@ -1,9 +1,12 @@
 @viewport {
   width: device-width;
-  zoom: auto;
-  min-zoom: 0.1;
-  max-zoom: 100%;
-  user-zoom: auto;
+  zoom: 100%;
+  user-zoom: fixed;
+}
+
+* {
+  box-sizing: content-box;
+  user-select: none;
 }
 
 body {
@@ -35,9 +38,14 @@ body {
 }
   
 .game-board div {
+  display: grid;
   background-color: #d9d9d9;
   border-style: outset;
   border-width: 5px;
+  color: blue;
+  font-weight: bolder;
+  align-content: center;
+  text-align: center;
 }
 
 #mines {
