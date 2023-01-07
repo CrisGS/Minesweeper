@@ -46,30 +46,33 @@ function generateBoardGame() {
   for(let i = 0; i < myBoard.length; i += 9) {
     gameGrid.push(myBoard.slice(i, i + 9));
   }
-  console.log(gameGrid[0][9]);
+
   for (let m = 0; m < bombs.length; ++m) {
     for (let l = 0; l < gameGrid.length; ++l) {
       for (let c = 0; c < gameGrid.length; ++c) {
         var iteratedCellClass = document.getElementById(gameGrid[l][c]).getAttribute('class');
         if (bombs[m] === gameGrid[l][c]) {
-          console.log(bombs[m] + " " + gameGrid[l][c] + " " + l + " " + c);
-          let iteratedCells = 0;
+          let iteratedCells = 0, neighbors = 1;
           // bomb that are not on the edge of the game grid
           if ((l > 0 && c < 8) && (l < 8 && c > 0)) {
             let startLine = l - 1, endLine = l + 2, startColumn = c - 1, endColumn = c + 2;
+            let cellValueAttribute;
             while (iteratedCells < 8) {
               for (let j = startColumn; j < endColumn; ++j) {
                 iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[startLine][j]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
-
               for (let i = startLine + 1; i < endLine; ++i) {
                 iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[i][endColumn - 1]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -77,7 +80,9 @@ function generateBoardGame() {
               for (let k = endColumn - 2; k > startColumn - 1; --k) {
                 iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[endLine - 1][k]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -85,7 +90,9 @@ function generateBoardGame() {
               for (let l = endLine - 2; l > startLine; --l) {
                 iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[l][startColumn]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -98,7 +105,9 @@ function generateBoardGame() {
               for (let i = startLine; i < endLine; ++i) {
                 iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[i][endColumn - 1]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -106,7 +115,9 @@ function generateBoardGame() {
               for (let k = endColumn - 2; k > startColumn - 1; --k) {
                 iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[endLine - 1][k]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -114,7 +125,9 @@ function generateBoardGame() {
               for (let l = endLine - 2; l > startLine - 1; --l) {
                 iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[l][startColumn]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -127,7 +140,9 @@ function generateBoardGame() {
               for (let j = startColumn; j < endColumn; ++j) {
                 iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[startLine][j]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -135,7 +150,9 @@ function generateBoardGame() {
               for (let i = startLine; i < endLine - 1; ++i) {
                 iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[i][endColumn - 1]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -143,7 +160,9 @@ function generateBoardGame() {
               for (let l = endLine - 2; l > startLine; --l) {
                 iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[l][startColumn]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -156,7 +175,9 @@ function generateBoardGame() {
               for (let j = startColumn; j < endColumn; ++j) {
                 iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[startLine][j]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -164,7 +185,9 @@ function generateBoardGame() {
               for (let k = endColumn - 1; k > startColumn - 1; --k) {
                 iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[endLine - 1][k]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -172,7 +195,9 @@ function generateBoardGame() {
               for (let l = endLine - 2; l > startLine; --l) {
                 iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[l][startColumn]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -185,7 +210,9 @@ function generateBoardGame() {
               for (let j = startColumn; j < endColumn; ++j) {
                 iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[startLine][j]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -193,7 +220,9 @@ function generateBoardGame() {
               for (let i = startLine + 1; i < endLine; ++i) {
                 iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[i][endColumn - 1]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -201,7 +230,9 @@ function generateBoardGame() {
               for (let k = endColumn - 1; k > startColumn - 1; --k) {
                 iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[endLine - 1][k]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -214,7 +245,9 @@ function generateBoardGame() {
               for (let i = startLine; i < endLine; ++i) {
                 iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[i][endColumn - 1]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -222,7 +255,9 @@ function generateBoardGame() {
               for (let k = endColumn - 2; k > startColumn - 1; --k) {
                 iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[endLine - 1][k]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -235,7 +270,9 @@ function generateBoardGame() {
               for (let l = endLine - 2; l > startLine - 1; --l) {
                 iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[l][startColumn]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -243,7 +280,9 @@ function generateBoardGame() {
               for (let k = endColumn; k > startColumn - 1; --k) {
                 iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[endLine - 1][k]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -256,7 +295,9 @@ function generateBoardGame() {
               for (let j = startColumn; j < endColumn; ++j) {
                 iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[startLine][j]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -264,7 +305,9 @@ function generateBoardGame() {
               for (let i = startLine + 1; i < endLine; ++i) {
                 iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[i][endColumn - 1]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -277,7 +320,9 @@ function generateBoardGame() {
               for (let j = startColumn; j < endColumn; ++j) {
                 iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[startLine][j]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -285,7 +330,9 @@ function generateBoardGame() {
               for (let l = endLine; l > startLine; --l) {
                 iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
                 if (iteratedCellClass != 'bomb') {
-                  document.getElementById(gameGrid[l][startColumn]).innerText = '1';
+                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
+                  cellValueAttribute.setAttribute('value', neighbors);
+                  cellValueAttribute.innerText = neighbors;
                 }
                 ++iteratedCells;
               }
@@ -317,7 +364,7 @@ function setBorder(clickedCellId) {
     clearInterval(myInterval);
     for (let j = 0; j < 20; ++j) {
       for (let i = 0; i < boardCellsNumber; ++i) {
-        const cell = document.getElementById(i);
+        var cell = document.getElementById(i);
         if (i === bombs[j]) {
           cell.style.backgroundColor = 'gray';
           cell.style.backgroundImage = "url('mine.png')";
