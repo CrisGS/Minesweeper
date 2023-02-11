@@ -5,14 +5,14 @@ document.getElementById("mines").innerHTML = minesNumber;
 let pressedCells = 0;
 let seconds = 0;
 let bombs = [];
+let gameGrid = [];
 let cellsIdWithFlags = new Set();
 var myInterval;
 
-function generateBoardGame() {
+function generateMines() {
   // generate randomly the bombs on the board
   let uniqueValues = new Set();
   let min = 1, max = boardCellsNumber;
-  document.getElementById('time').innerText = '0' + '0' + seconds;
   // store the id cells which will be set as a bomb into an array which is ascending sorted for a easier iteration through the iteration of the board game 
   while(uniqueValues.size < minesNumber) {
     uniqueValues.add(Math.floor(Math.random() * (max - min + min) + min));
@@ -25,6 +25,14 @@ function generateBoardGame() {
     }
     return 0;
   });
+  return bombs;
+}
+
+function generateBoardGame() {
+  // display the time
+  document.getElementById('time').innerText = '0' + '0' + seconds;
+  generateMines();
+  console.log(generateMines());
   // generate the board game and set the state of cells (safe cell or bomb cell)
   let myBoard = [];
   for (let i = 0; i < boardCellsNumber; ++i) {
@@ -38,316 +46,19 @@ function generateBoardGame() {
         divsElement.style.backgroundColor = 'red';
       }
     }
-    divsElement.setAttribute('onclick', 'setBorder(this.id)');
+    divsElement.setAttribute('value', 0);
+    divsElement.setAttribute('onclick', 'setBorder(this.id), haveMineInside(this.id)');
     boardGame.appendChild(divsElement);
   }
   // convert the array where the cells id are stored to a 2d array
-  let gameGrid = [];
   for(let i = 0; i < myBoard.length; i += 9) {
     gameGrid.push(myBoard.slice(i, i + 9));
   }
-
-  for (let m = 0; m < bombs.length; ++m) {
-    for (let l = 0; l < gameGrid.length; ++l) {
-      for (let c = 0; c < gameGrid.length; ++c) {
-        var iteratedCellClass = document.getElementById(gameGrid[l][c]).getAttribute('class');
-        if (bombs[m] === gameGrid[l][c]) {
-          let iteratedCells = 0, neighbors = 1;
-          // bomb that are not on the edge of the game grid
-          if ((l > 0 && c < 8) && (l < 8 && c > 0)) {
-            let startLine = l - 1, endLine = l + 2, startColumn = c - 1, endColumn = c + 2;
-            let cellValueAttribute;
-            while (iteratedCells < 8) {
-              for (let j = startColumn; j < endColumn; ++j) {
-                iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-              for (let i = startLine + 1; i < endLine; ++i) {
-                iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let k = endColumn - 2; k > startColumn - 1; --k) {
-                iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let l = endLine - 2; l > startLine; --l) {
-                iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the top edge of the game grid
-          if ((l === 0 && c > 0) && (l === 0 && c < 8)) {
-            startLine = 0, endLine = l + 2, startColumn = c - 1, endColumn = c + 2;
-            while (iteratedCells < 6) {
-              for (let i = startLine; i < endLine; ++i) {
-                iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let k = endColumn - 2; k > startColumn - 1; --k) {
-                iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let l = endLine - 2; l > startLine - 1; --l) {
-                iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the bottom edge of the game grid 
-          if ((l === 8 && c > 0) && (l === 8 && c < 8)) {
-            startLine = l - 1, endLine = l + 2, startColumn = c - 1, endColumn = c + 2;
-            while (iteratedCells < 6) {
-              for (let j = startColumn; j < endColumn; ++j) {
-                iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let i = startLine; i < endLine - 1; ++i) {
-                iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let l = endLine - 2; l > startLine; --l) {
-                iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the right edge of the game grid 
-          if ((c === 8 && l > 0) && ( c === 8 && l < 8)) {
-            startLine = l - 1, endLine = l + 2, startColumn = c - 1, endColumn = c + 1;
-            while (iteratedCells < 6) {
-              for (let j = startColumn; j < endColumn; ++j) {
-                iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let k = endColumn - 1; k > startColumn - 1; --k) {
-                iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let l = endLine - 2; l > startLine; --l) {
-                iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the left edge of the game grid 
-          if ((c === 0 && l > 0) && (c === 0 && l < 8)) {
-            startLine = l - 1, endLine = l + 2, startColumn = c, endColumn = c + 2;
-            while (iteratedCells < 6) {
-              for (let j = startColumn; j < endColumn; ++j) {
-                iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let i = startLine + 1; i < endLine; ++i) {
-                iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let k = endColumn - 1; k > startColumn - 1; --k) {
-                iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the top left corner of the game grid
-          if (l === 0 && c === 0) {
-            startLine = l, endLine = l + 2, startColumn = c, endColumn = c + 2;
-            while (iteratedCells < 4) {
-              for (let i = startLine; i < endLine; ++i) {
-                iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let k = endColumn - 2; k > startColumn - 1; --k) {
-                iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the top right corner of the game grid
-          if (l === 0 && c === 8) {
-            startLine = l, endLine = l + 2, startColumn = c - 1, endColumn = c;
-            while (iteratedCells < 4) {
-              for (let l = endLine - 2; l > startLine - 1; --l) {
-                iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let k = endColumn; k > startColumn - 1; --k) {
-                iteratedCellClass = document.getElementById(gameGrid[endLine - 1][k]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[endLine - 1][k]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the bottom left corner of the game grid
-          if (l === 8 && c === 0) {
-            let startLine = l - 1, endLine = l + 1, startColumn = c, endColumn = c + 2;
-            while (iteratedCells < 8) {
-              for (let j = startColumn; j < endColumn; ++j) {
-                iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let i = startLine + 1; i < endLine; ++i) {
-                iteratedCellClass = document.getElementById(gameGrid[i][endColumn - 1]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[i][endColumn - 1]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-          // bomb that are on the bottom right corner of the game grid
-          if (l === 8 && c === 8) {
-            let startLine = l - 1, endLine = l, startColumn = c - 1, endColumn = c + 1;
-            while (iteratedCells < 8) {
-              for (let j = startColumn; j < endColumn; ++j) {
-                iteratedCellClass = document.getElementById(gameGrid[startLine][j]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[startLine][j]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-
-              for (let l = endLine; l > startLine; --l) {
-                iteratedCellClass = document.getElementById(gameGrid[l][startColumn]).getAttribute('class');
-                if (iteratedCellClass != 'bomb') {
-                  cellValueAttribute = document.getElementById(gameGrid[l][startColumn]);
-                  cellValueAttribute.setAttribute('value', neighbors);
-                  cellValueAttribute.innerText = neighbors;
-                }
-                ++iteratedCells;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+  nearBombs();
 }
 
 // handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
 function setBorder(clickedCellId) {
-  let clickedCell = document.getElementById(clickedCellId);
-  let clickedCellType = clickedCell.getAttribute('class');
   for (let i = 0; i < boardCellsNumber; ++i) {
     if (i == clickedCellId) {
       ++pressedCells;
@@ -357,20 +68,21 @@ function setBorder(clickedCellId) {
   if (pressedCells === 1) {
     elapsedTime();
   }
-  
+}
+
+function haveMineInside(clickedCellIds) {
   // check if the selected cell contain a bomb
+  let clickedCell = document.getElementById(clickedCellIds);
+  let clickedCellType = clickedCell.getAttribute('class');
   if (clickedCellType === 'bomb') {
     document.getElementById('resetGameIcon').style.backgroundImage = "url('deadSmile.png')";
     clearInterval(myInterval);
-    for (let j = 0; j < 20; ++j) {
+    for (let j = 0; j < minesNumber; ++j) {
       for (let i = 0; i < boardCellsNumber; ++i) {
         var cell = document.getElementById(i);
         if (i === bombs[j]) {
-          cell.style.backgroundColor = 'gray';
-          cell.style.backgroundImage = "url('mine.png')";
-          cell.style.backgroundRepeat = "no-repeat";
-          cell.style.backgroundPosition = "center";
-          cell.style.border = "2px inset #d9d9d9";
+          cell.style.background = "#808080 url('mine.png') no-repeat center";
+          cell.style.border = "#d9d9d9 inset 2px";
           cell.style.pointerEvents = 'none';
         }
       }
@@ -396,7 +108,6 @@ boardGame.addEventListener('contextmenu', (ev) => {
       rightClickedCell.style.backgroundRepeat = "no-repeat";
       rightClickedCell.style.backgroundPosition = "center";
       if (rightClickedCellType === 'bomb') {
-        --minesNumber;
         --flagsNumber;
       }
     } else {
@@ -410,6 +121,127 @@ boardGame.addEventListener('contextmenu', (ev) => {
     document.getElementById("mines").innerHTML = minesNumber;
   }
 }, false);
+
+function nearBombs() {
+  for (let i = 0; i < 9; ++i) {
+    for (let j = 0; j < 9; ++j) {
+      let counter = 0;
+      if (i > 0 && i < 8 && j > 0 && j < 8) {
+        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
+          if (document.getElementById(gameGrid[i - 1][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i - 1][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i + 1][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i + 1][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
+        }
+      }
+      if (i === 0) {
+        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
+          if (j < 8 && document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (j < 8 && document.getElementById(gameGrid[i + 1][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (j > 0 && document.getElementById(gameGrid[i + 1][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (j > 0 && document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
+        }
+      }
+      if (j === 8) {
+        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
+          if (document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i < 8 && document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i > 0 && document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i > 0 && document.getElementById(gameGrid[i - 1][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i < 8 && document.getElementById(gameGrid[i + 1][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
+        }
+      }
+      if (i === 8) {
+        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
+          if (j > 0 && document.getElementById(gameGrid[i - 1][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (j < 8 && document.getElementById(gameGrid[i - 1][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (j < 8 && document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (j > 0 && document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
+        }
+      }
+      if (j === 0) {
+        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
+          if (i > 0 && document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i > 0 && document.getElementById(gameGrid[i - 1][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i < 8 && document.getElementById(gameGrid[i + 1][j + 1]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          if (i < 8 && document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
+            ++counter;
+          }
+          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
+        }
+      }
+      console.log(gameGrid[i][j] + ' ' + document.getElementById(gameGrid[i][j]).getAttribute("value"));
+      if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe' && document.getElementById(gameGrid[i][j]).getAttribute("value") != 0) {
+        document.getElementById(gameGrid[i][j]).innerText = document.getElementById(gameGrid[i][j]).getAttribute("value");
+      }
+    }
+  }
+}
 
 // handle the time functionality
 function elapsedTime() {
