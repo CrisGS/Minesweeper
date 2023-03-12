@@ -131,7 +131,6 @@ function checkWin() {
     }
     document.getElementById('header').innerText = 'Game Won!';
   }
-  console.log(defusedBombs.size + ' ' + bombs.length);
 }
 
 function nearBombs() {
