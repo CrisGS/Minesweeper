@@ -21,8 +21,9 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   border: none;
-  width: 75px;
-  height: 75px;
+  width: 70px;
+  height: 70px;
+  align-self: center;
 }
 
 .game-board {
@@ -36,7 +37,7 @@ body {
   transform: translate(-50%, -0);
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
 }
-  
+
 .game-board div {
   display: grid;
   background-color: #d9d9d9;
