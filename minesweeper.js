@@ -72,6 +72,45 @@ function setBorder(clickedCellId) {
   if (pressedCells === 1) {
     elapsedTime();
   }
+  reveallCells(clickedCellId);
+}
+
+function reveallCells(clickedCellId) {
+  let coada = [];
+  let row;
+  let col;
+  for (let i = 0; i < 9; ++i) {
+    for (let j = 0; j < 9; ++j) {
+      if (gameGrid[i][j] == clickedCellId) {
+        row = i;
+        col = j;
+      }
+    }
+  }
+
+  if (document.getElementById(clickedCellId).getAttribute('value') > 0) {
+    document.getElementById(clickedCellId).style.border = "2px inset #d9d9d9";
+  } else if (document.getElementById(clickedCellId).getAttribute('value') == 0) {
+    coada.push(clickedCellId);
+    for (let i = row - 1; i <= row + 1; ++i) {
+      for (let j = col - 1; j <= col + 1; ++j) {
+        if (i >= 0 && i < 9 && j >= 0 && j < 9 && gameGrid[i][j] != clickedCellId) {
+          if (document.getElementById(gameGrid[i][j]).getAttribute('class') != 'bomb') {
+            coada.push(gameGrid[i][j]);
+
+          }
+        }
+      }
+    }
+  }
+  while (coada.length > 0) {
+    let currentElement = coada.shift();
+    document.getElementById(currentElement).style.border = "2px inset #d9d9d9";
+    if (document.getElementById(currentElement).getAttribute('value') > 0) {
+      document.getElementById(currentElement).innerText = document.getElementById(currentElement).getAttribute("value");
+    }
+  }
+  console.log(coada)
 }
 
 function haveMineInside(clickedCellIds) {
@@ -134,8 +173,9 @@ function checkWin() {
 }
 
 function nearBombs() {
-  for (let i = 0; i < 9; ++i) {
-    for (let j = 0; j < 9; ++j) {
+  let rows = 9, columns = 9;
+  for (let i = 0; i < rows; ++i) {
+    for (let j = 0; j < columns; ++j) {
       let counter = 0;
       if (i > 0 && i < 8 && j > 0 && j < 8) {
         if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
@@ -246,7 +286,6 @@ function nearBombs() {
           document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
         }
       }
-
     }
   }
 }
