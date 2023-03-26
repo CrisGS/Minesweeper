@@ -79,6 +79,7 @@ function reveallCells(clickedCellId) {
   let coada = [];
   let row;
   let col;
+  let expand = 1;
   for (let i = 0; i < 9; ++i) {
     for (let j = 0; j < 9; ++j) {
       if (gameGrid[i][j] == clickedCellId) {
@@ -91,26 +92,27 @@ function reveallCells(clickedCellId) {
   if (document.getElementById(clickedCellId).getAttribute('value') > 0) {
     document.getElementById(clickedCellId).style.border = "2px inset #d9d9d9";
   } else if (document.getElementById(clickedCellId).getAttribute('value') == 0) {
-    coada.push(clickedCellId);
-    for (let i = row - 1; i <= row + 1; ++i) {
-      for (let j = col - 1; j <= col + 1; ++j) {
-        if (i >= 0 && i < 9 && j >= 0 && j < 9 && gameGrid[i][j] != clickedCellId) {
-          if (document.getElementById(gameGrid[i][j]).getAttribute('class') != 'bomb') {
+    for (let i = row - expand; i <= row + expand; ++i) {
+      for (let j = col - expand; j <= col + expand; ++j) {
+        if (i >= 0 && i < 9 && j >= 0 && j < 9) {
+          if (document.getElementById(gameGrid[i][j]).getAttribute('value') == 0 && document.getElementById(gameGrid[i][j]).getAttribute('class') != 'bomb') {
             coada.push(gameGrid[i][j]);
-
+          }
+          if (document.getElementById(gameGrid[i][j]).getAttribute('value') > 0) {
+            document.getElementById(gameGrid[i][j]).style.border = "2px inset #d9d9d9";
+            document.getElementById(gameGrid[i][j]).innerText = document.getElementById(gameGrid[i][j]).getAttribute('value');
           }
         }
+      }
+      if (row - expand >= 0 && row + expand < 9 && col - expand >= 0 && col + expand < 9) {
+        ++expand;
       }
     }
   }
   while (coada.length > 0) {
     let currentElement = coada.shift();
     document.getElementById(currentElement).style.border = "2px inset #d9d9d9";
-    if (document.getElementById(currentElement).getAttribute('value') > 0) {
-      document.getElementById(currentElement).innerText = document.getElementById(currentElement).getAttribute("value");
-    }
   }
-  console.log(coada)
 }
 
 function haveMineInside(clickedCellIds) {
@@ -169,6 +171,7 @@ function checkWin() {
       everyCell.style.pointerEvents = 'none';
     }
     document.getElementById('header').innerText = 'Game Won!';
+    clearInterval(myInterval);
   }
 }
 
