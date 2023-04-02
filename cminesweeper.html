@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="http://fonts.cdnfonts.com/css/led-digital-7" rel="stylesheet" />
+    <link href="bomb.ico" rel="icon" type="image/x-icon" />
+    <link rel="stylesheet" href="cminesweeper.css" />
+    <title>Minesweeper</title>
+  </head>
+  <body onload="generateBoardGame()">
+    <h1 id="header">Minesweeper</h1>
+    <div class="game">
+      <div class="functions-panel">
+        <div id="mines" title="Number of flags"></div>
+        <button id="resetGameIcon" onclick="resetGame()" title="Restart Game"></button>
+        <div id="time" title="Elapsed time"></div>
+      </div>
+      <div class="game-board" id="boardGameCells"></div>
+    </div>
+    <script src="cminesweeper.js"></script>
+  </body>
+</html>

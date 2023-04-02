@@ -1,0 +1,97 @@
+@viewport {
+  width: device-width;
+  zoom: 100%;
+  user-zoom: fixed;
+}
+
+* {
+  box-sizing: content-box;
+  user-select: none;
+}
+
+body {
+  background-image: url('background.png');
+  background-size: auto;
+}
+
+#resetGameIcon {
+  background-image: url("smiley.png");
+  background-color: #d9d9d9;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: none;
+  width: 70px;
+  height: 70px;
+  align-self: center;
+}
+
+.game-board {
+  display: grid;
+  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+  grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+  justify-content: center;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -0);
+  box-shadow: 0 0 6px 3px rgb(8, 8, 8);
+}
+
+.game-board div {
+  display: grid;
+  background-color: #d9d9d9;
+  border-style: outset;
+  border-width: 5px;
+  color: blue;
+  font-weight: bolder;
+  align-content: center;
+  text-align: center;
+}
+
+#mines {
+  font-family: monospace;
+  font-size: 60px;
+  color: red;
+  width: 90px;
+  height: auto;
+  text-align: center;
+  text-shadow: 2px 2px 5px black, 2px 2px 5px red;
+  background-color: black;
+}
+
+#time {
+  font-family: monospace;
+  font-size: 60px;
+  color: red;
+  text-shadow: 2px 2px 5px black, 2px 2px 5px red;
+  width: 120px;
+  height: 80px;
+  text-align: center;
+  background-color: black;
+}
+
+.functions-panel {
+  display: flex;
+  background-color: #d9d9d9;
+  border-style: inset;
+  border-width: 5px;
+  width: 442px;
+  height: 80px;
+  position: absolute;
+  top: 16.5%;
+  left: 50%;
+  transform: translate(-50%, -0);
+  box-shadow: 0 0 6px 3px rgb(8, 8, 8);
+  justify-content: space-between;
+}
+
+h1 {
+  font-family: monospace;
+  font-size: 50px;
+  text-align: center;
+  -webkit-text-fill-color: #d9d9d9;
+  text-shadow: 3px 3px 7px black;
+  font-weight: 700;
+  text-decoration: underline;
+}
