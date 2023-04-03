@@ -6,9 +6,10 @@ let pressedCells = 0;
 let seconds = 0;
 let bombs = [];
 let gameGrid = [];
+let revealedCells = new Set();
 let cellsIdWithFlags = new Set();
 let defusedBombs = new Set();
-var myInterval;
+var myInterval, rightClickEnabled = false;
 
 function generateMines() {
   // generate randomly the bombs on the board
@@ -73,10 +74,12 @@ function setBorder(clickedCellId) {
     elapsedTime();
   }
   if (document.getElementById(clickedCellId).getAttribute('value') > 0) {
+    revealedCells.add(parseInt(clickedCellId));
     document.getElementById(clickedCellId).style.border = "2px inset #d9d9d9";
     document.getElementById(clickedCellId).innerText = document.getElementById(clickedCellId).getAttribute('value');
   }
   reveallCells(row, col);
+  checkWin();
 }
 
 function reveallCells(row, col) {
@@ -87,6 +90,7 @@ function reveallCells(row, col) {
         if (i >= 0 && i < 9 && j >= 0 && j < 9) {
           if (document.getElementById(gameGrid[i][j]).getAttribute('class') == 'safe') {
             coada.push(gameGrid[i][j]);
+            revealedCells.add(gameGrid[i][j]);
           }
         }
       }
@@ -128,34 +132,40 @@ function haveMineInside(clickedCellIds) {
 }
 
 // handle right click events on cells (set flag to the selected cell)
-boardGame.addEventListener('contextmenu', (ev) => {
-  ev.preventDefault();
-  const rightClickedCell = document.getElementById(ev.target.id);
-  const rightClickedCellType = document.getElementById(ev.target.id).getAttribute("class");
-  if (cellsIdWithFlags.has(ev.target.id) === false && ev.target.id !== 'boardGameCells') {
-    cellsIdWithFlags.add(ev.target.id);
-    rightClickedCell.style.background = '#d9d9d9 url(flag.png) no-repeat center';
-    if (flagsNumber > 0) {
-      --flagsNumber;
+if (rightClickEnabled === true) {
+  boardGame.addEventListener('contextmenu', (ev) => {
+    ev.preventDefault();
+    const rightClickedCell = document.getElementById(ev.target.id);
+    const rightClickedCellType = document.getElementById(ev.target.id).getAttribute("class");
+    if (cellsIdWithFlags.has(ev.target.id) === false && ev.target.id !== 'boardGameCells') {
+      cellsIdWithFlags.add(ev.target.id);
+      rightClickedCell.style.background = '#d9d9d9 url(flag.png) no-repeat center';
+      if (flagsNumber > 0) {
+        --flagsNumber;
+      }
+      if (rightClickedCellType == "bomb") {
+        defusedBombs.add(ev.target.id);
+      }
+    } else {
+      cellsIdWithFlags.delete(ev.target.id);
+      rightClickedCell.style.backgroundImage = 'none';
+      ++flagsNumber;
     }
-    if (rightClickedCellType == "bomb") {
-      defusedBombs.add(ev.target.id);
-    }
-  } else {
-    cellsIdWithFlags.delete(ev.target.id);
-    rightClickedCell.style.backgroundImage = 'none';
-    ++flagsNumber;
-  }
-  document.getElementById("mines").innerHTML = flagsNumber;
-  checkWin();
-}, false);
+    document.getElementById("mines").innerHTML = flagsNumber;
+    checkWin();
+  }, false);
+}
 
 function checkWin() {
-  if (defusedBombs.size === bombs.length && flagsNumber === 0) {
+  if ((defusedBombs.size === bombs.length && flagsNumber === 0) || revealedCells.size === 71) {
     for (let i = 0; i < boardCellsNumber; ++i) {
       const everyCell = document.getElementById(i);
       everyCell.style.pointerEvents = 'none';
     }
+    rightClickEnabled = false;
+    boardGame.addEventListener('contextmenu', (ev) => {
+      ev.preventDefault();
+    });
     document.getElementById('header').innerText = 'Game Won!';
     clearInterval(myInterval);
   }
