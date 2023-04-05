@@ -9,7 +9,7 @@ let gameGrid = [];
 let revealedCells = new Set();
 let cellsIdWithFlags = new Set();
 let defusedBombs = new Set();
-var myInterval, rightClickEnabled = false;
+var myInterval, rightClickEnabled = true;
 
 function generateMines() {
   // generate randomly the bombs on the board
@@ -60,7 +60,7 @@ function generateBoardGame() {
 
 // handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
 function setBorder(clickedCellId) {
-  let row, col;
+  let row, col, clickedCell = document.getElementById(clickedCellId);
   for (let i = 0; i < 9; ++i) {
     for (let j = 0; j < 9; ++j) {
       if (gameGrid[i][j] == clickedCellId) {
@@ -73,10 +73,10 @@ function setBorder(clickedCellId) {
   if (pressedCells === 1) {
     elapsedTime();
   }
-  if (document.getElementById(clickedCellId).getAttribute('value') > 0) {
+  if (clickedCell.getAttribute('value') > 0) {
     revealedCells.add(parseInt(clickedCellId));
-    document.getElementById(clickedCellId).style.border = "2px inset #d9d9d9";
-    document.getElementById(clickedCellId).innerText = document.getElementById(clickedCellId).getAttribute('value');
+    clickedCell.style.border = "2px inset #d9d9d9";
+    clickedCell.innerText = document.getElementById(clickedCellId).getAttribute('value');
   }
   reveallCells(row, col);
   checkWin();
@@ -137,7 +137,7 @@ if (rightClickEnabled === true) {
     ev.preventDefault();
     const rightClickedCell = document.getElementById(ev.target.id);
     const rightClickedCellType = document.getElementById(ev.target.id).getAttribute("class");
-    if (cellsIdWithFlags.has(ev.target.id) === false && ev.target.id !== 'boardGameCells') {
+    if (cellsIdWithFlags.has(ev.target.id) === false && ev.target.id !== 'boardGameCells' && revealedCells.has(parseInt(ev.target.id)) === false) {
       cellsIdWithFlags.add(ev.target.id);
       rightClickedCell.style.background = '#d9d9d9 url(flag.png) no-repeat center';
       if (flagsNumber > 0) {
@@ -146,7 +146,7 @@ if (rightClickEnabled === true) {
       if (rightClickedCellType == "bomb") {
         defusedBombs.add(ev.target.id);
       }
-    } else {
+    } else if (revealedCells.has(parseInt(ev.target.id)) === false) {
       cellsIdWithFlags.delete(ev.target.id);
       rightClickedCell.style.backgroundImage = 'none';
       ++flagsNumber;
