@@ -44,7 +44,8 @@ body {
   border-style: outset;
   border-width: 5px;
   color: blue;
-  font-weight: bolder;
+  font-weight: 1000;
+  font-size: larger;
   align-content: center;
   text-align: center;
 }

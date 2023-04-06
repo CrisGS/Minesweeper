@@ -77,6 +77,17 @@ function setBorder(clickedCellId) {
     revealedCells.add(parseInt(clickedCellId));
     clickedCell.style.border = "2px inset #d9d9d9";
     clickedCell.innerText = document.getElementById(clickedCellId).getAttribute('value');
+    if (document.getElementById(clickedCellId).getAttribute('value') > 0) {
+      if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 1) {
+        document.getElementById(clickedCellId).style.color = "blue";
+      } else if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 2) {
+        document.getElementById(clickedCellId).style.color = "green";
+      } else if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 3) {
+        document.getElementById(clickedCellId).style.color = "red";
+      } else if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 4) {
+        document.getElementById(clickedCellId).style.color = "brown";
+      }
+    }
   }
   reveallCells(row, col);
   checkWin();
@@ -97,10 +108,19 @@ function reveallCells(row, col) {
     }
   }
   while (coada.length > 0) {
-    let currentElement = coada.shift();
+    let currentElement = coada.shift(), cellValue = document.getElementById(currentElement).getAttribute('value');
     document.getElementById(currentElement).style.border = "2px inset #d9d9d9";
-    if (document.getElementById(currentElement).getAttribute('value') > 0) {
-      document.getElementById(currentElement).innerText = document.getElementById(currentElement).getAttribute('value');
+    if (cellValue > 0) {
+      document.getElementById(currentElement).innerText = cellValue;
+      if (parseInt(cellValue) === 1) {
+        document.getElementById(currentElement).style.color = "blue";
+      } else if (parseInt(cellValue) === 2) {
+        document.getElementById(currentElement).style.color = "green";
+      } else if (parseInt(cellValue) === 3) {
+        document.getElementById(currentElement).style.color = "red";
+      } else if (parseInt(cellValue) === 4) {
+        document.getElementById(currentElement).style.color = "brown";
+      }
     }
   }
 }
