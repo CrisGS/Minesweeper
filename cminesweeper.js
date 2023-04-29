@@ -94,119 +94,52 @@ function setBorder(clickedCellId) {
   checkWin();
 }
 
-/*function reveallCells(row, col) {
-  let coada = [];
-  if (parseInt(document.getElementById(gameGrid[row][col]).getAttribute('value')) === 0) {
-    for (let i = row - 1; i <= row + 1; ++i) {
-      for (let j = col - 1; j <= col + 1; ++j) {
-        if (i >= 0 && i < 9 && j >= 0 && j < 9) {
-          if (document.getElementById(gameGrid[i][j]).getAttribute('class') == 'safe') {
-            coada.push(gameGrid[i][j]);
-            revealedCells.add(gameGrid[i][j]);
-          }
-        }
-      }
-    }
-  }
-  while (coada.length > 0) {
-    let currentElement = coada.shift(), cellValue = document.getElementById(currentElement).getAttribute('value');
-    document.getElementById(currentElement).style.border = "2px inset #d9d9d9";
-    if (cellValue > 0) {
-      document.getElementById(currentElement).innerText = cellValue;
-      if (cellValue === 1) {
-        document.getElementById(currentElement).style.color = "blue";
-      } else if (cellValue === 2) {
-        document.getElementById(currentElement).style.color = "green";
-      } else if (cellValue === 3) {
-        document.getElementById(currentElement).style.color = "red";
-      } else if (cellValue === 4) {
-        document.getElementById(currentElement).style.color = "brown";
-      }
-    }
-  }
-}*/
-
+let coada = [];
 function reveallCells(row, col) {
-  let coada = [];
-  if (document.getElementById(gameGrid[row][col]).getAttribute('value') == 0 && document.getElementById(gameGrid[row][col]).getAttribute('class') == 'safe') {
+  let cellRow, cellColum;
+  if (parseInt(document.getElementById(gameGrid[row][col]).getAttribute('value')) === 0 && document.getElementById(gameGrid[row][col]).classList.contains("visited") === false) {
+    document.getElementById(gameGrid[row][col]).setAttribute('class', 'visited');
     coada.push(gameGrid[row][col]);
+    checkAdjacentCells(row, col);
   }
   while (coada.length > 0) {
     let currentCell = coada.shift();
-    if (revealedCells.has(currentCell)) {
-      continue;
+    for (let i = 0; i < 9; ++i) {
+      for (let j = 0; j < 9; ++j) {
+        if (gameGrid[i][j] === currentCell) {
+          cellRow = i;
+          cellColum = j;
+        }
+      }
     }
-    revealedCells.add(currentCell);
-    let cellValue = parseInt(document.getElementById(currentCell).getAttribute('value'));
+    checkAdjacentCells(cellRow, cellColum);
     document.getElementById(currentCell).style.border = "2px inset #d9d9d9";
-    if (cellValue > 0) {
-      document.getElementById(currentCell).innerText = cellValue;
-      if (cellValue === 1) {
-        document.getElementById(currentCell).style.color = "blue";
-      } else if (cellValue === 2) {
-        document.getElementById(currentCell).style.color = "green";
-      } else if (cellValue === 3) {
-        document.getElementById(currentCell).style.color = "red";
-      } else if (cellValue === 4) {
-        document.getElementById(currentCell).style.color = "brown";
+  }
+  return row, col;
+}
+
+function checkAdjacentCells(r, c) {
+  for (let i = r - 1; i <= r + 1; ++i) {
+    for (let j = c - 1; j <= c + 1; ++j) {
+      if (i >= 0 && i < 9 && j >= 0 && j < 9) {
+        let neighboursBombsNumber = parseInt(document.getElementById(gameGrid[i][j]).getAttribute('value'));
+        if (neighboursBombsNumber === 0 && document.getElementById(gameGrid[i][j]).classList.contains("visited") === false) {
+          document.getElementById(gameGrid[i][j]).setAttribute('class', 'visited');
+          coada.push(gameGrid[i][j]);
+        } else if (neighboursBombsNumber > 0) {
+          document.getElementById(gameGrid[i][j]).style.border = "2px inset #d9d9d9";
+          document.getElementById(gameGrid[i][j]).innerText = neighboursBombsNumber;
+          if (neighboursBombsNumber === 1) {
+            document.getElementById(gameGrid[i][j]).style.color = "blue";
+          } else if (neighboursBombsNumber === 2) {
+            document.getElementById(gameGrid[i][j]).style.color = "green";
+          } else if (neighboursBombsNumber === 3) {
+            document.getElementById(gameGrid[i][j]).style.color = "red";
+          } else if (neighboursBombsNumber === 4) {
+            document.getElementById(gameGrid[i][j]).style.color = "brown";
+          }
+        }
       }
-    }
-    let leftSide = col, rightSide = col, topSide = row, downSide = row;
-    while (downSide < 8 && parseInt(document.getElementById(gameGrid[downSide + 1][col]).getAttribute('value')) === 0) {
-      coada.push(gameGrid[downSide + 1][col]); // Celula de jos
-      let auxLeftSide1 = col;
-      while (auxLeftSide1 > 0 && parseInt(document.getElementById(gameGrid[downSide + 1][auxLeftSide1 - 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[downSide + 1][auxLeftSide1 - 1]);
-        --auxLeftSide1;
-      }
-      let auxRightSide1 = col;
-      while (auxRightSide1 < 8 && parseInt(document.getElementById(gameGrid[downSide + 1][auxRightSide1 + 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[downSide + 1][auxRightSide1 + 1]);
-        ++auxRightSide1;
-      }
-      ++downSide;
-    }
-    while (topSide > 0 && parseInt(document.getElementById(gameGrid[topSide - 1][col]).getAttribute('value')) === 0) {
-      coada.push(gameGrid[topSide - 1][col]); // Celula de sus
-      let auxLeftSide2 = col;
-      while (auxLeftSide2 > 0 && parseInt(document.getElementById(gameGrid[topSide - 1][auxLeftSide2 - 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[topSide - 1][auxLeftSide2 - 1]);
-        --auxLeftSide2;
-      }
-      let auxRightSide2 = col;
-      while (auxRightSide2 < 8 && parseInt(document.getElementById(gameGrid[topSide - 1][auxRightSide2 + 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[topSide - 1][auxRightSide2 + 1]);
-        ++auxRightSide2;
-      }
-      --topSide;
-    }
-    while (rightSide < 8 && parseInt(document.getElementById(gameGrid[row][rightSide + 1]).getAttribute('value')) === 0) {
-      coada.push(gameGrid[row][rightSide + 1]); // Celula din dreapta
-      let auxTopSide1 = row;
-      while (auxTopSide1 > 0 && parseInt(document.getElementById(gameGrid[auxTopSide1 - 1][rightSide + 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[auxTopSide1 - 1][rightSide + 1]);
-        --auxTopSide1;
-      }
-      let auxDownSide1 = row;
-      while (auxDownSide1 < 8 && parseInt(document.getElementById(gameGrid[auxDownSide1 + 1][rightSide + 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[auxDownSide1 + 1][rightSide + 1]);
-        ++auxDownSide1;
-      }
-      ++rightSide;
-    }
-    while (leftSide > 0 && parseInt(document.getElementById(gameGrid[row][leftSide - 1]).getAttribute('value')) === 0) {
-      coada.push(gameGrid[row][leftSide - 1]); // Celula din stanga
-      let auxTopSide2 = row;
-      while (auxTopSide2 > 0 && parseInt(document.getElementById(gameGrid[auxTopSide2 - 1][leftSide - 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[auxTopSide2 - 1][leftSide - 1]);
-        --auxTopSide2;
-      }
-      let auxDownSide2 = row;
-      while (auxDownSide2 < 8 && parseInt(document.getElementById(gameGrid[auxDownSide2 + 1][leftSide - 1]).getAttribute('value')) === 0) {
-        coada.push(gameGrid[auxDownSide2 + 1][leftSide - 1]);
-        ++auxDownSide2;
-      }
-      --leftSide;
     }
   }
 }
