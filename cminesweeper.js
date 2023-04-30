@@ -40,7 +40,6 @@ function generateBoardGame() {
       if (i === bombs[j]) {
         divsElement.setAttribute('class', 'bomb');
         divsElement.setAttribute('value', -1);
-        divsElement.style.backgroundColor = 'red';
       }
     }
     divsElement.setAttribute('onclick', 'setBorder(this.id), haveMineInside(this.id)');
