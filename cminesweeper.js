@@ -1,14 +1,8 @@
-let minesNumber = 10, flagsNumber = 10;
-const boardCellsNumber = 81;
+let minesNumber = 10, flagsNumber = 10, pressedCells = 0, seconds = 0, boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
 document.getElementById("mines").innerHTML = minesNumber;
-let pressedCells = 0;
-let seconds = 0;
-let bombs = [];
-let gameGrid = [];
-let revealedCells = new Set();
-let cellsIdWithFlags = new Set();
-let defusedBombs = new Set();
+let bombs = [], gameGrid = [], coada = [];
+let revealedCells = new Set(), cellsIdWithFlags = new Set(), defusedBombs = new Set();
 var myInterval, rightClickEnabled = true;
 
 function generateMines() {
@@ -94,7 +88,6 @@ function setBorder(clickedCellId) {
   checkWin();
 }
 
-let coada = [];
 function reveallCells(row, col) {
   let cellRow, cellColum;
   if (parseInt(document.getElementById(gameGrid[row][col]).getAttribute('value')) === 0 && document.getElementById(gameGrid[row][col]).classList.contains("visited") === false) {
@@ -208,7 +201,6 @@ function checkWin() {
     document.getElementById('header').innerText = 'Game Won!';
     clearInterval(myInterval);
   }
-  console.log(revealedCells.size)
 }
 
 function nearBombs() {
@@ -216,114 +208,17 @@ function nearBombs() {
   for (let i = 0; i < rows; ++i) {
     for (let j = 0; j < columns; ++j) {
       let counter = 0;
-      if (i > 0 && i < 8 && j > 0 && j < 8) {
-        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
-          if (document.getElementById(gameGrid[i - 1][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
+      if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
+        for (let r = i - 1; r <= i + 1; ++r) {
+          for (let c = j - 1; c <= j + 1; ++c) {
+            if (r >= 0 && r <= 8 && c >= 0 && c <= 8) {
+              if (document.getElementById(gameGrid[r][c]).getAttribute("class") == 'bomb') {
+                ++counter;
+              }
+            }
           }
-          if (document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i - 1][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i + 1][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i + 1][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
         }
-      }
-      if (i === 0) {
-        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
-          if (j < 8 && document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (j < 8 && document.getElementById(gameGrid[i + 1][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (j > 0 && document.getElementById(gameGrid[i + 1][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (j > 0 && document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
-        }
-      }
-      if (j === 8) {
-        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
-          if (document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i < 8 && document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i > 0 && document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i > 0 && document.getElementById(gameGrid[i - 1][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i < 8 && document.getElementById(gameGrid[i + 1][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
-        }
-      }
-      if (i === 8) {
-        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
-          if (j > 0 && document.getElementById(gameGrid[i - 1][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (j < 8 && document.getElementById(gameGrid[i - 1][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (j < 8 && document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (j > 0 && document.getElementById(gameGrid[i][j - 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
-        }
-      }
-      if (j === 0) {
-        if (document.getElementById(gameGrid[i][j]).getAttribute("class") == 'safe') {
-          if (i > 0 && document.getElementById(gameGrid[i - 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i > 0 && document.getElementById(gameGrid[i - 1][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (document.getElementById(gameGrid[i][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i < 8 && document.getElementById(gameGrid[i + 1][j + 1]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          if (i < 8 && document.getElementById(gameGrid[i + 1][j]).getAttribute("class") == 'bomb') {
-            ++counter;
-          }
-          document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
-        }
+        document.getElementById(gameGrid[i][j]).setAttribute("value", counter);
       }
     }
   }
