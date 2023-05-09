@@ -170,7 +170,7 @@ if (rightClickEnabled === true) {
     const rightClickedCellType = document.getElementById(ev.target.id).getAttribute("class");
     if (cellsIdWithFlags.has(ev.target.id) === false && ev.target.id !== 'boardGameCells' && revealedCells.has(parseInt(ev.target.id)) === false) {
       cellsIdWithFlags.add(ev.target.id);
-      rightClickedCell.style.background = '#d9d9d9 url(flag.png) no-repeat center';
+      rightClickedCell.style.background = '#c0c0c0 url(flag.png) no-repeat center';
       if (flagsNumber > 0) {
         --flagsNumber;
       }
