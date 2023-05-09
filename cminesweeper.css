@@ -1,9 +1,3 @@
-@viewport {
-  width: device-width;
-  zoom: 100%;
-  user-zoom: fixed;
-}
-
 * {
   box-sizing: content-box;
   user-select: none;
@@ -11,7 +5,7 @@
 
 body {
   background-image: url('background.png');
-  background-size: auto;
+  background-repeat: no-repeat;
 }
 
 #resetGameIcon {
@@ -21,20 +15,31 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   border: none;
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   align-self: center;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
 }
 
 .game-board {
   display: grid;
-  grid-template-columns: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
-  grid-template-rows: 50px 50px 50px 50px 50px 50px 50px 50px 50px;
+  grid-template-columns: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
+  grid-template-rows: 40px 40px 40px 40px 40px 40px 40px 40px 40px;
   justify-content: center;
-  position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -0);
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
 }
 
@@ -51,48 +56,45 @@ body {
 }
 
 #mines {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: monospace;
   font-size: 60px;
   color: red;
-  width: 90px;
-  height: auto;
-  text-align: center;
+  width: 80px;
   text-shadow: 2px 2px 5px black, 2px 2px 5px red;
   background-color: black;
 }
 
 #time {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   font-family: monospace;
   font-size: 60px;
   color: red;
   text-shadow: 2px 2px 5px black, 2px 2px 5px red;
-  width: 120px;
-  height: 80px;
-  text-align: center;
+  width: 110px;
   background-color: black;
 }
 
 .functions-panel {
   display: flex;
   background-color: #d9d9d9;
-  border-style: inset;
-  border-width: 5px;
-  width: 442px;
+  border: 5px inset;
+  width: 360px;
   height: 80px;
-  position: absolute;
-  top: 16.5%;
-  left: 50%;
-  transform: translate(-50%, -0);
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
   justify-content: space-between;
 }
 
 h1 {
   font-family: monospace;
-  font-size: 50px;
+  font-size: 90px;
   text-align: center;
   -webkit-text-fill-color: #d9d9d9;
   text-shadow: 3px 3px 7px black;
-  font-weight: 700;
+  font-weight: 900;
   text-decoration: underline;
 }
