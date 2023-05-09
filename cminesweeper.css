@@ -4,17 +4,20 @@
 }
 
 body {
-  background-image: url('background.png');
-  background-repeat: no-repeat;
+  background: rgb(129,129,129);
+  background: -moz-radial-gradient(circle, rgba(129,129,129,0.9753151260504201) 0%, rgba(159,159,159,1) 100%);
+  background: -webkit-radial-gradient(circle, rgba(129,129,129,0.9753151260504201) 0%, rgba(159,159,159,1) 100%);
+  background: radial-gradient(circle, rgba(129,129,129,0.9753151260504201) 0%, rgba(159,159,159,1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#818181",endColorstr="#9f9f9f",GradientType=1);
 }
 
 #resetGameIcon {
   background-image: url("smiley.png");
-  background-color: #d9d9d9;
+  background-color: #b7b7b7;
   background-position: center;
-  background-size: contain;
+  background-size: 45px;
   background-repeat: no-repeat;
-  border: none;
+  border: 5px outset;
   width: 60px;
   height: 60px;
   align-self: center;
@@ -26,7 +29,7 @@ body {
   align-items: center;
   gap: 4px;
   position: fixed;
-  top: 50%;
+  top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
@@ -45,7 +48,7 @@ body {
 
 .game-board div {
   display: grid;
-  background-color: #d9d9d9;
+  background-color: #c0c0c0;
   border-style: outset;
   border-width: 5px;
   color: blue;
@@ -55,46 +58,60 @@ body {
   text-align: center;
 }
 
+@font-face {
+  font-family: digitalFont;
+  src: url(digitalFont.ttf);
+  text-align: center;
+}
+
 #mines {
   display: flex;
+  font-family: digitalFont;
   justify-content: center;
   align-items: center;
-  font-family: monospace;
-  font-size: 60px;
+  font-size: 50px;
   color: red;
-  width: 80px;
-  text-shadow: 2px 2px 5px black, 2px 2px 5px red;
+  width: 60px;
+  height: 60px;
+  text-shadow: 2px 2px 9px red;
   background-color: black;
+  margin-left: 5px;
+  border: 5px inset;
 }
 
 #time {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: monospace;
-  font-size: 60px;
+  font-family: digitalFont;
+  font-size: 50px;
   color: red;
-  text-shadow: 2px 2px 5px black, 2px 2px 5px red;
-  width: 110px;
+  text-shadow: 2px 2px 9px red;
+  width: 90px;
+  height: 60px;
   background-color: black;
+  margin-right: 5px;
+  border: 5px inset;
 }
 
 .functions-panel {
   display: flex;
-  background-color: #d9d9d9;
+  background-color: #c0c0c0;
   border: 5px inset;
   width: 360px;
   height: 80px;
+  align-items: center;
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
   justify-content: space-between;
 }
 
-h1 {
-  font-family: monospace;
-  font-size: 90px;
+.header {
+  font-family: digitalFont;
   text-align: center;
-  -webkit-text-fill-color: #d9d9d9;
-  text-shadow: 3px 3px 7px black;
+  font-size: 60px;
+  margin-top: 30px;
+  -webkit-text-fill-color: red;
+  text-shadow: 2px 2px 9px red;
   font-weight: 900;
-  text-decoration: underline;
+  background-color: black;
 }
