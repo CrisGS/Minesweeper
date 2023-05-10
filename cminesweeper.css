@@ -12,11 +12,8 @@ body {
 }
 
 #resetGameIcon {
-  background-image: url("smiley.png");
-  background-color: #b7b7b7;
-  background-position: center;
+  background: #b7b7b7 url("smiley.png") no-repeat center;
   background-size: 45px;
-  background-repeat: no-repeat;
   border: 5px outset;
   width: 60px;
   height: 60px;
@@ -50,7 +47,6 @@ body {
   display: grid;
   background-color: #c0c0c0;
   border: 5px outset;
-  color: blue;
   font-weight: 1000;
   font-size: larger;
   align-content: center;
@@ -106,12 +102,12 @@ body {
 }
 
 .header {
-  font-family: digitalFont;
   text-align: center;
+  font-family: digitalFont;
   font-size: 60px;
-  margin-top: 30px;
+  font-weight: 900;
   -webkit-text-fill-color: red;
   text-shadow: 2px 2px 9px red;
-  font-weight: 900;
   background-color: black;
+  margin-top: 30px;
 }
