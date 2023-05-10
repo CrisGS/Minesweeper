@@ -49,8 +49,7 @@ body {
 .game-board div {
   display: grid;
   background-color: #c0c0c0;
-  border-style: outset;
-  border-width: 5px;
+  border: 5px outset;
   color: blue;
   font-weight: 1000;
   font-size: larger;
@@ -103,6 +102,7 @@ body {
   align-items: center;
   box-shadow: 0 0 6px 3px rgb(8, 8, 8);
   justify-content: space-between;
+
 }
 
 .header {

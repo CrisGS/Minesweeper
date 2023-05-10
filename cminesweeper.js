@@ -92,6 +92,7 @@ function reveallCells(row, col) {
   if (parseInt(document.getElementById(gameGrid[row][col]).getAttribute('value')) === 0 && document.getElementById(gameGrid[row][col]).classList.contains("visited") === false) {
     document.getElementById(gameGrid[row][col]).setAttribute('class', 'visited');
     coada.push(gameGrid[row][col]);
+    revealedCells.add(gameGrid[row][col]);
     checkAdjacentCells(row, col);
   }
   while (coada.length > 0) {
@@ -118,9 +119,11 @@ function checkAdjacentCells(r, c) {
         if (neighboursBombsNumber === 0 && document.getElementById(gameGrid[i][j]).classList.contains("visited") === false) {
           document.getElementById(gameGrid[i][j]).setAttribute('class', 'visited');
           coada.push(gameGrid[i][j]);
+          revealedCells.add(gameGrid[i][j]);
         } else if (neighboursBombsNumber > 0) {
           document.getElementById(gameGrid[i][j]).style.border = "2px inset #d9d9d9";
           document.getElementById(gameGrid[i][j]).innerText = neighboursBombsNumber;
+          revealedCells.add(gameGrid[i][j]);
           if (neighboursBombsNumber === 1) {
             document.getElementById(gameGrid[i][j]).style.color = "blue";
           } else if (neighboursBombsNumber === 2) {
@@ -143,6 +146,7 @@ function haveMineInside(clickedCellIds) {
   if (clickedCellType === 'bomb') {
     document.getElementById('resetGameIcon').style.backgroundImage = "url('deadSmile.png')";
     clearInterval(myInterval);
+    rightClickEnabled = false;
     for (let j = 0; j < minesNumber; ++j) {
       for (let i = 0; i < boardCellsNumber; ++i) {
         var cell = document.getElementById(i);
@@ -177,7 +181,7 @@ if (rightClickEnabled === true) {
       if (rightClickedCellType == "bomb") {
         defusedBombs.add(ev.target.id);
       }
-    } else if (revealedCells.has(parseInt(ev.target.id)) === false) {
+    } else if (revealedCells.has(parseInt(ev.target.id)) === false && rightClickEnabled === true) {
       cellsIdWithFlags.delete(ev.target.id);
       rightClickedCell.style.backgroundImage = 'none';
       ++flagsNumber;
