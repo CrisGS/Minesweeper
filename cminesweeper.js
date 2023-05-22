@@ -52,6 +52,19 @@ function generateBoardGame() {
   nearBombs();
 }
 
+function fontColor(r, c) {
+  let cellValue = parseInt(document.getElementById(gameGrid[r][c]).getAttribute('value'));
+  if (cellValue === 1) {
+    document.getElementById(gameGrid[r][c]).style.color = "blue";
+  } else if (cellValue === 2) {
+    document.getElementById(gameGrid[r][c]).style.color = "green";
+  } else if (cellValue === 3) {
+    document.getElementById(gameGrid[r][c]).style.color = "red";
+  } else if (cellValue === 4) {
+    document.getElementById(gameGrid[r][c]).style.color = "brown";
+  }
+}
+
 // handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
 function setBorder(clickedCellId) {
   let row, col, clickedCell = document.getElementById(clickedCellId);
@@ -71,17 +84,7 @@ function setBorder(clickedCellId) {
     revealedCells.add(parseInt(clickedCellId));
     clickedCell.style.border = "2px inset #d9d9d9";
     clickedCell.innerText = document.getElementById(clickedCellId).getAttribute('value');
-    if (document.getElementById(clickedCellId).getAttribute('value') > 0) {
-      if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 1) {
-        document.getElementById(clickedCellId).style.color = "blue";
-      } else if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 2) {
-        document.getElementById(clickedCellId).style.color = "green";
-      } else if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 3) {
-        document.getElementById(clickedCellId).style.color = "red";
-      } else if (parseInt(document.getElementById(clickedCellId).getAttribute('value')) === 4) {
-        document.getElementById(clickedCellId).style.color = "brown";
-      }
-    }
+    fontColor(row, col);
   }
   reveallCells(row, col);
   checkWin();
@@ -124,15 +127,7 @@ function checkAdjacentCells(r, c) {
           document.getElementById(gameGrid[i][j]).style.border = "2px inset #d9d9d9";
           document.getElementById(gameGrid[i][j]).innerText = neighboursBombsNumber;
           revealedCells.add(gameGrid[i][j]);
-          if (neighboursBombsNumber === 1) {
-            document.getElementById(gameGrid[i][j]).style.color = "blue";
-          } else if (neighboursBombsNumber === 2) {
-            document.getElementById(gameGrid[i][j]).style.color = "green";
-          } else if (neighboursBombsNumber === 3) {
-            document.getElementById(gameGrid[i][j]).style.color = "red";
-          } else if (neighboursBombsNumber === 4) {
-            document.getElementById(gameGrid[i][j]).style.color = "brown";
-          }
+          fontColor(i, j);
         }
       }
     }
