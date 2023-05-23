@@ -54,15 +54,8 @@ function generateBoardGame() {
 
 function fontColor(r, c) {
   let cellValue = parseInt(document.getElementById(gameGrid[r][c]).getAttribute('value'));
-  if (cellValue === 1) {
-    document.getElementById(gameGrid[r][c]).style.color = "blue";
-  } else if (cellValue === 2) {
-    document.getElementById(gameGrid[r][c]).style.color = "green";
-  } else if (cellValue === 3) {
-    document.getElementById(gameGrid[r][c]).style.color = "red";
-  } else if (cellValue === 4) {
-    document.getElementById(gameGrid[r][c]).style.color = "brown";
-  }
+  let colors = ['blue', 'green', 'red', 'brown'];
+  document.getElementById(gameGrid[r][c]).style.color = colors.at(cellValue - 1);
 }
 
 // handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
