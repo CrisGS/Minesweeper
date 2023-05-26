@@ -1,7 +1,7 @@
 let minesNumber = 10, flagsNumber = 10, pressedCells = 0, seconds = 0, boardCellsNumber = 81;
 const boardGame = document.getElementById("boardGameCells");
 document.getElementById("mines").innerHTML = minesNumber;
-let bombs = [], gameGrid = [], coada = [];
+let bombs = [], gameGrid = [], queue = [];
 let revealedCells = new Set(), cellsIdWithFlags = new Set(), defusedBombs = new Set();
 var myInterval, rightClickEnabled = true;
 
@@ -55,7 +55,7 @@ function generateBoardGame() {
 function fontColor(r, c) {
   let cellValue = parseInt(document.getElementById(gameGrid[r][c]).getAttribute('value'));
   let colors = ['blue', 'green', 'red', 'brown'];
-  document.getElementById(gameGrid[r][c]).style.color = colors.at(cellValue - 1);
+  document.getElementById(gameGrid[r][c]).style.color = colors[cellValue - 1];
 }
 
 // handle left click events to the selected cell by the user (aply pressed cell efect to the selected cell)
@@ -87,12 +87,12 @@ function reveallCells(row, col) {
   let cellRow, cellColum;
   if (parseInt(document.getElementById(gameGrid[row][col]).getAttribute('value')) === 0 && document.getElementById(gameGrid[row][col]).classList.contains("visited") === false) {
     document.getElementById(gameGrid[row][col]).setAttribute('class', 'visited');
-    coada.push(gameGrid[row][col]);
+    queue.push(gameGrid[row][col]);
     revealedCells.add(gameGrid[row][col]);
     checkAdjacentCells(row, col);
   }
-  while (coada.length > 0) {
-    let currentCell = coada.shift();
+  while (queue.length > 0) {
+    let currentCell = queue.shift();
     for (let i = 0; i < 9; ++i) {
       for (let j = 0; j < 9; ++j) {
         if (gameGrid[i][j] === currentCell) {
@@ -114,7 +114,7 @@ function checkAdjacentCells(r, c) {
         let neighboursBombsNumber = parseInt(document.getElementById(gameGrid[i][j]).getAttribute('value'));
         if (neighboursBombsNumber === 0 && document.getElementById(gameGrid[i][j]).classList.contains("visited") === false) {
           document.getElementById(gameGrid[i][j]).setAttribute('class', 'visited');
-          coada.push(gameGrid[i][j]);
+          queue.push(gameGrid[i][j]);
           revealedCells.add(gameGrid[i][j]);
         } else if (neighboursBombsNumber > 0) {
           document.getElementById(gameGrid[i][j]).style.border = "2px inset #d9d9d9";
